@@ -57,7 +57,7 @@ export default class ListItem extends Component {
             <EventIcon event={event} action={payload.action} />
           </div>
           <span className="input-monospace">{event}</span>
-          <time className="f6" style={{ marginLeft: 'auto' }}>{moment(item.timestamp).fromNow()}</time>
+          <time className="f6" style={{ marginLeft: 'auto' }} data-testid="time-ago">{moment(item.timestamp).fromNow()}</time>
           <button onClick={this.toggleExpanded} className="ellipsis-expander ml-2"><KebabHorizontalIcon height={12} /></button>
         </div>
 

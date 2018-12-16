@@ -3,18 +3,27 @@ import ListItem from '../src/components/ListItem'
 import { shallow } from 'enzyme'
 
 describe('<ListItem />', () => {
-  let item, el, togglePinned
+  let item, el, togglePinned, mockDate
 
   beforeEach(() => {
+    mockDate = jest.spyOn(Date, 'now').mockImplementation(() => {
+      // Wed Dec 13 2017 16:00:00 UTC
+      return 1513180800000
+    })
+
     item = {
       'x-github-event': 'issues',
-      timestamp: 1513148474751,
+      timestamp: 1513177200000, // Wed Dec 13 2017 15:00:00 UTC
       body: { action: 'opened' }
     }
 
     togglePinned = jest.fn()
 
     el = shallow(<ListItem last item={item} pinned={false} togglePinned={togglePinned} />)
+  })
+
+  afterEach(() => {
+    mockDate.mockRestore()
   })
 
   describe('redeliver', () => {
@@ -38,6 +47,12 @@ describe('<ListItem />', () => {
 
       el.find('button.ellipsis-expander').simulate('click')
       expect(el.children().length).toBe(2)
+    })
+  })
+
+  describe('time ago', () => {
+    it('displays relative time since event', () => {
+      expect(el.find('[data-testid="time-ago"]').text()).toBe('an hour ago')
     })
   })
 
